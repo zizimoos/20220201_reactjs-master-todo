@@ -1,19 +1,32 @@
-import { useRecoilState } from "recoil";
-import { todoState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { categoryState, todoState, todoStateSelector } from "../atoms";
 import CreateTodoForm from "./CreateTodoForm";
 import ShowTodoList from "./ShowTodoList";
+import { Categories } from "../atoms";
 
 interface ITodoForm {
   todo: string;
 }
 
 function ToDoApp() {
-  const [todoList, _] = useRecoilState(todoState);
+  const [category, setCategory] = useRecoilState(categoryState);
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+    setCategory(event.currentTarget.value as any);
+  };
   return (
     <div>
-      <div>ToDo List</div>
+      <div>Write ToDo</div>
+      <form>
+        <select value={category} onInput={onInput}>
+          <option value={Categories.TODO}>to_do</option>
+          <option value={Categories.PROGRESS}>In_progress</option>
+          <option value={Categories.DONE}>done</option>
+        </select>
+      </form>
+
       <CreateTodoForm></CreateTodoForm>
-      <ShowTodoList todoList={todoList}></ShowTodoList>
+      <div>ToDo List</div>
+      <ShowTodoList></ShowTodoList>
     </div>
   );
 }
