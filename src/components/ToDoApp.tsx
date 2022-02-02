@@ -3,6 +3,16 @@ import { categoryState, todoState, todoStateSelector } from "../atoms";
 import CreateTodoForm from "./CreateTodoForm";
 import ShowTodoList from "./ShowTodoList";
 import { Categories } from "../atoms";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+`;
 
 interface ITodoForm {
   todo: string;
@@ -15,18 +25,35 @@ function ToDoApp() {
   };
   return (
     <div>
-      <div>Write ToDo</div>
-      <form>
-        <select value={category} onInput={onInput}>
-          <option value={Categories.TODO}>to_do</option>
-          <option value={Categories.PROGRESS}>In_progress</option>
-          <option value={Categories.DONE}>done</option>
-        </select>
-      </form>
-
-      <CreateTodoForm></CreateTodoForm>
-      <div>ToDo List</div>
-      <ShowTodoList></ShowTodoList>
+      <Container>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "10px",
+          }}
+        >
+          <div>SELECT YOUR CATEGOFY</div>
+          <form>
+            <select
+              value={category}
+              onInput={onInput}
+              style={{
+                border: "0px solid black",
+                width: "200px",
+                borderRadius: "20px",
+                padding: "5px 20px",
+              }}
+            >
+              <option value={Categories.TODO}>to_do</option>
+              <option value={Categories.PROGRESS}>In_progress</option>
+              <option value={Categories.DONE}>done</option>
+            </select>
+          </form>
+        </div>
+        <CreateTodoForm></CreateTodoForm>
+        <ShowTodoList></ShowTodoList>
+      </Container>
     </div>
   );
 }

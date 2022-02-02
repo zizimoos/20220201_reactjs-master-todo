@@ -5,9 +5,11 @@ declare module "styled-components" {
     borderRadius: string;
 
     colors: {
-      secondary: string;
-      background: string;
       primary: string;
+      secondary: string;
+      bgColor: string;
+      boardColor: string;
+      cardColor: string;
     };
   }
 }

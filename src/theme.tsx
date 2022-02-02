@@ -6,6 +6,8 @@ export const DarkTheme: DefaultTheme = {
   colors: {
     primary: "#0070f3",
     secondary: "#ff4081",
-    background: "white",
+    bgColor: "#3F8CF2",
+    boardColor: "#DADFE9",
+    cardColor: "white",
   },
 };
