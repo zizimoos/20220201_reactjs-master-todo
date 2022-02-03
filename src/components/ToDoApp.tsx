@@ -23,6 +23,8 @@ function ToDoApp() {
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
     setCategory(event.currentTarget.value as any);
   };
+  const [todo, progress, done] = useRecoilValue(todoStateSelector);
+
   return (
     <div>
       <Container>
@@ -30,6 +32,8 @@ function ToDoApp() {
           style={{
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
+            paddingTop: "30px",
             marginBottom: "10px",
           }}
         >
@@ -52,7 +56,20 @@ function ToDoApp() {
           </form>
         </div>
         <CreateTodoForm></CreateTodoForm>
-        <ShowTodoList></ShowTodoList>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <ShowTodoList
+            todoList={todo}
+            droppableId={Categories.TODO}
+          ></ShowTodoList>
+          {/* <ShowTodoList
+            todoList={progress}
+            droppableId={Categories.PROGRESS}
+          ></ShowTodoList>
+          <ShowTodoList
+            todoList={done}
+            droppableId={Categories.DONE}
+          ></ShowTodoList> */}
+        </div>
       </Container>
     </div>
   );

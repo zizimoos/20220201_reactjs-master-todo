@@ -27,10 +27,15 @@ const CreateTodoForm = () => {
   } = useForm<ITodoForm>({});
 
   const handleValid = ({ todo }: ITodoForm) => {
-    setTodoList((current) => [
-      { text: todo, category: category, id: Date.now() },
-      ...current,
-    ]);
+    setTodoList((current) => {
+      const newTodoList = [
+        { text: todo, category: category, id: Date.now() },
+        ...current,
+      ];
+
+      localStorage.setItem("todoList", JSON.stringify(newTodoList));
+      return newTodoList;
+    });
     setValue("todo", "");
   };
 
@@ -41,6 +46,7 @@ const CreateTodoForm = () => {
           {...register("todo", { required: "write todo here" })}
           type={"text"}
           placeholder="write your todo"
+          style={{ width: "100%", borderRadius: "5px" }}
         />
         <span>{errors?.todo?.message}</span>
         <button>submit</button>

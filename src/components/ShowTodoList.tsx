@@ -1,8 +1,14 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ITodo, todoState, todoStateSelector } from "../atoms";
 import { Categories } from "../atoms";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 import styled from "styled-components";
+import { MdChecklist, MdDone, MdPlaylistPlay } from "react-icons/md";
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,9 +43,8 @@ const Card = styled.div`
   background-color: ${(props) => props.theme.colors.cardColor};
 `;
 
-const ShowTodoList = () => {
+const ShowTodoList = ({ todoList: todoListProps, droppableId }: any) => {
   const [todoList, setTodoList] = useRecoilState(todoState);
-  const todoStateS = useRecoilValue(todoStateSelector);
 
   const onClick = (todo: ITodo, newCategory: ITodo["category"]) => {
     setTodoList((current) => {
@@ -48,7 +53,7 @@ const ShowTodoList = () => {
       const newTodo = { ...oldTodo, category: newCategory };
       const newTodoList = [...current]; //새로운 배열을 만들어서 새로운 값을 넣어줘야만 한다.
       newTodoList.splice(targetIndex, 1, newTodo);
-      localStorage.setItem("todoList", JSON.stringify(todoList));
+      localStorage.setItem("todoList", JSON.stringify(newTodoList));
       return newTodoList;
     });
   };
@@ -63,18 +68,33 @@ const ShowTodoList = () => {
     });
   };
 
-  const onDragEnd = () => {};
+  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    if (!destination) return;
+
+    setTodoList((oldToDos) => {
+      const toDosCopy = [...oldToDos];
+
+      //선택된 카드를 지운다.
+      const [removed] = toDosCopy.splice(source.index, 1);
+
+      // 선택된 카드를 새로운 위치에 넣는다.
+      toDosCopy.splice(destination?.index, 0, removed);
+
+      return toDosCopy;
+    });
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          <Droppable droppableId="droppable_TODO">
+          <Droppable droppableId={droppableId}>
             {(provided) => (
               <Board ref={provided.innerRef} {...provided.droppableProps}>
-                {todoStateS.map((todo: ITodo, index) => (
-                  <Draggable
-                    draggableId={"Draggable" + String(todo.id)}
+                {todoListProps.map((todo: ITodo, index: number) => (
+                  <Draggable // key와 draggableId가 같아야 합니다.
+                    draggableId={todo.text}
+                    key={todo.text}
                     index={index}
                   >
                     {(provided) => (
@@ -84,27 +104,27 @@ const ShowTodoList = () => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <div>{todo.text}</div>
+                        <div style={{ minWidth: "250px" }}>{todo.text}</div>
                         <div>
                           {todo.category !== Categories.TODO && (
                             <button
                               onClick={() => onClick(todo, Categories.TODO)}
                             >
-                              TODO
+                              <MdChecklist />
                             </button>
                           )}
                           {todo.category !== Categories.PROGRESS && (
                             <button
                               onClick={() => onClick(todo, Categories.PROGRESS)}
                             >
-                              PROGRESS
+                              <MdPlaylistPlay />
                             </button>
                           )}
                           {todo.category !== Categories.DONE && (
                             <button
                               onClick={() => onClick(todo, Categories.DONE)}
                             >
-                              DONE
+                              <MdDone />
                             </button>
                           )}
                           <button onClick={() => onDelete(todo)}>DEL</button>

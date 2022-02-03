@@ -34,6 +34,10 @@ export const todoStateSelector = selector({
     const todos = get(todoState);
     const category = get(categoryState);
 
-    return todos.filter((todo) => todo.category === category);
+    return [
+      todos.filter((todo) => todo.category === Categories.TODO),
+      // todos.filter((todo) => todo.category === Categories.PROGRESS),
+      // todos.filter((todo) => todo.category === Categories.DONE),
+    ];
   },
 });
