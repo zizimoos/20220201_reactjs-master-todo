@@ -1,16 +1,25 @@
 import { atom, selector } from "recoil";
 
 export enum Categories {
-  TODO = "to_do",
-  PROGRESS = "In_progress",
-  DONE = "done",
+  TODO = "TO_DO",
+  PROGRESS = "DOING",
+  DONE = "DONE",
 }
 
-export interface ITodo {
+export interface IForm {
+  todo: string;
+}
+
+export interface IToDo {
   text: string;
   id: number;
-  category: Categories;
+  category: "TO_DO" | "DOING" | "DONE";
 }
+
+export const toDoState = atom<IToDo[]>({
+  key: "toDoState",
+  default: [],
+});
 
 const localStorageData = localStorage.getItem("todoList");
 const localStorageTodoList = localStorageData
@@ -18,9 +27,56 @@ const localStorageTodoList = localStorageData
   : [];
 const todoListWithLocalStorage = [...localStorageTodoList];
 
-export const todoState = atom<ITodo[]>({
-  key: "todoStatekey",
-  default: todoListWithLocalStorage,
+export const todoStateObject = atom({
+  key: "todoStateObject",
+  default: {
+    to_do: [
+      {
+        text: "TODO ONE",
+        category: "to_do",
+        id: 1643977420510,
+      },
+      {
+        text: "one for the God",
+        category: "to_do",
+        id: 1643977303656,
+      },
+      {
+        text: "two for the J",
+        category: "to_do",
+        id: 1643977310968,
+      },
+    ],
+    In_progress: [
+      {
+        text: "three for the M",
+        category: "In_progress",
+        id: 1643977321059,
+      },
+      {
+        text: "PROGRESS TWO",
+        category: "In_progress",
+        id: 1643977355518,
+      },
+      {
+        text: "PROGRESS THREE",
+        category: "In_progress",
+        id: 1643977586763,
+      },
+    ],
+    done: [
+      {
+        text: "DONE TWO",
+        category: "done",
+        id: 1643977382676,
+      },
+      {
+        text: "DONE ONE",
+        category: "done",
+        id: 1643977378727,
+      },
+    ],
+  },
 });
 
 export const categoryState = atom<Categories>({
@@ -31,13 +87,9 @@ export const categoryState = atom<Categories>({
 export const todoStateSelector = selector({
   key: "todoStateSelector",
   get: ({ get }) => {
-    const todos = get(todoState);
+    const todos = get(todoStateObject);
     const category = get(categoryState);
 
-    return [
-      todos.filter((todo) => todo.category === Categories.TODO),
-      // todos.filter((todo) => todo.category === Categories.PROGRESS),
-      // todos.filter((todo) => todo.category === Categories.DONE),
-    ];
+    return [todos];
   },
 });
