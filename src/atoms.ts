@@ -20,7 +20,7 @@ const localStorageDONE = localStorage.getItem(Categories.DONE);
 export interface IToDo {
   text: string;
   id: number;
-  category: "TODO" | "DOIN" | "DONE";
+  category: Categories;
 }
 
 export const toDoState = atom<IToDo[]>({
@@ -47,6 +47,7 @@ export const todoStateSelector = selector({
   get: ({ get }) => {
     const todos = get(toDoState);
     const category = get(categoryState);
+    // return todos.filter((todo) => todo.category === category);
 
     return [
       todos.filter((todo) => todo.category === Categories.TODO),

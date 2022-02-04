@@ -2,9 +2,10 @@ import styled from "styled-components";
 import CreateTodo from "./CreateTodo/CreateTodo";
 
 const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  width: 100%;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -12,11 +13,9 @@ const Container = styled.div`
 
 function ToDoApp() {
   return (
-    <div>
-      <Container>
-        <CreateTodo />
-      </Container>
-    </div>
+    <Container>
+      <CreateTodo />
+    </Container>
   );
 }
 export default ToDoApp;
