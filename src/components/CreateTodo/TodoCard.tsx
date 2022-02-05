@@ -1,36 +1,61 @@
-import { IToDo } from "../../atoms";
+import { Categories, IToDo, toDoState } from "../../atoms";
 import styled from "styled-components";
-
-import Buttons from "./Buttons";
+import React from "react";
+import { useRecoilState } from "recoil";
 
 const Container = styled.div`
   width: 100%;
   min-width: 290px;
   margin-top: 10px;
   padding: 5px;
-  border-radius: 5px;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   background-color: #f5f5f5;
 `;
 
-const TodoText = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 10px;
-  font-size: 14px;
-  color: #333;
-`;
-
 const TodoCard = ({ text, category, id }: IToDo) => {
+  const [newCategory, setNewCategory] = useRecoilState(toDoState);
+
+  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const {
+      currentTarget: { name },
+    } = event;
+    setNewCategory((oldToDos) => {
+      const copyTodos = [...oldToDos];
+      const targetIndex = copyTodos.findIndex((todo) => todo.id === id);
+      const newTodo = {
+        id,
+        text,
+        category: name as Categories,
+      };
+      copyTodos.splice(targetIndex, 1, newTodo);
+
+      return [...copyTodos];
+    });
+  };
   return (
     <Container>
-      <TodoText>
-        <div>{text}</div>
-      </TodoText>
-      <Buttons id={id} category={category} text={text} />
+      <div>
+        {category} : {text} : {id}
+      </div>
+      <div>
+        {category !== "TODO" && (
+          <button name="TODO" onClick={onClick}>
+            TODO
+          </button>
+        )}
+        {category !== "DOIN" && (
+          <button name="DOIN" onClick={onClick}>
+            DOIN
+          </button>
+        )}
+        {category !== "DONE" && (
+          <button name="DONE" onClick={onClick}>
+            DONE
+          </button>
+        )}
+        <button>DEL</button>
+      </div>
     </Container>
   );
 };

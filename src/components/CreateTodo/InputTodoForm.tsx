@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
+<<<<<<< HEAD
 import styled from "styled-components";
 import {
   Categories,
@@ -25,6 +26,9 @@ const InputTo = styled.input`
   border-radius: 5px;
   border: none;
 `;
+=======
+import { Categories, toDoState, todoStateSelector } from "../../atoms";
+>>>>>>> parent of 9c971cb... done before beautiful dnd
 
 interface IForm {
   todo: string;
@@ -34,6 +38,7 @@ const InputTodoForm = () => {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const [todoList, setTodoList] = useRecoilState(toDoState);
   const [TODO, DOIN, DONE] = useRecoilValue(todoStateSelector);
+<<<<<<< HEAD
   const [selectedCategory, _] = useRecoilState(categoryState);
   const [todoListObject, setTodoListObject] = useRecoilState(todoStateObject);
 
@@ -53,18 +58,39 @@ const InputTodoForm = () => {
     JSON.stringify(todoListObject[selectedCategory])
   );
 
+=======
+
+  const handleValid = ({ todo }: IForm) => {
+    setTodoList((oldToDos) => [
+      { id: Date.now(), text: todo, category: "TODO" },
+      ...oldToDos,
+    ]);
+    setValue("todo", "");
+  };
+  localStorage.setItem("todoList", JSON.stringify(todoList));
+  localStorage.setItem(Categories.TODO, JSON.stringify(TODO));
+  localStorage.setItem(Categories.DOIN, JSON.stringify(DOIN));
+  localStorage.setItem(Categories.DONE, JSON.stringify(DONE));
+>>>>>>> parent of 9c971cb... done before beautiful dnd
   return (
-    <Container>
+    <div
+      style={{
+        backgroundColor: "tomato",
+        display: "flex",
+        justifyContent: "center",
+        padding: "10px",
+      }}
+    >
       <form onSubmit={handleSubmit(handleValid)}>
-        <InputTo
+        <input
           {...register("todo", {
             required: "Please write a To Do",
           })}
           placeholder="Write a to do"
         />
-        {/* <button>Add</button> */}
+        <button>Add</button>
       </form>
-    </Container>
+    </div>
   );
 };
 export default InputTodoForm;
