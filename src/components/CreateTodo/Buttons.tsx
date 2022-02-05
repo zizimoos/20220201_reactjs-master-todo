@@ -39,7 +39,7 @@ const Buttons = ({ id, text, category }: IToDo) => {
       )}
       {category !== Categories.DOIN && (
         <button name={Categories.DOIN} onClick={onClick}>
-          DOIN
+          DOING
         </button>
       )}
       {category !== Categories.DONE && (
@@ -47,7 +47,7 @@ const Buttons = ({ id, text, category }: IToDo) => {
           DONE
         </button>
       )}
-      <DeleteButton id={id} />
+      <DeleteButton id={id} category={category} />
     </Container>
   );
 };

@@ -28,7 +28,11 @@ export const toDoState = atom<IToDo[]>({
   default: localStorageTodoList,
 });
 
-export const todoStateObject = atom({
+interface ITodoStateObject {
+  [key: string]: IToDo[];
+}
+
+export const todoStateObject = atom<ITodoStateObject>({
   key: "todoStateObject",
   default: {
     TODO: localStorageTODO ? JSON.parse(localStorageTODO) : [],

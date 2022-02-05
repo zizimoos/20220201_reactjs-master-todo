@@ -5,8 +5,6 @@ declare module "styled-components" {
     borderRadius: string;
 
     colors: {
-      primary: string;
-      secondary: string;
       bgColor: string;
       boardColor: string;
       cardColor: string;

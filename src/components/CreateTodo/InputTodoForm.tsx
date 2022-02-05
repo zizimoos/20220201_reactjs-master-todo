@@ -6,6 +6,7 @@ import {
   toDoState,
   todoStateSelector,
   categoryState,
+  todoStateObject,
 } from "../../atoms";
 
 const Container = styled.div`
@@ -20,7 +21,7 @@ const Container = styled.div`
 const InputTo = styled.input`
   width: 70vw;
   padding: 10px;
-  margin-right: 15px;
+  margin-right: 30px;
   border-radius: 5px;
   border: none;
 `;
@@ -34,18 +35,23 @@ const InputTodoForm = () => {
   const [todoList, setTodoList] = useRecoilState(toDoState);
   const [TODO, DOIN, DONE] = useRecoilValue(todoStateSelector);
   const [selectedCategory, _] = useRecoilState(categoryState);
+  const [todoListObject, setTodoListObject] = useRecoilState(todoStateObject);
 
   const handleValid = ({ todo }: IForm) => {
-    setTodoList((oldToDos) => [
-      { id: Date.now(), text: todo, category: selectedCategory },
-      ...oldToDos,
-    ]);
+    const newTodo = { id: Date.now(), text: todo, category: selectedCategory };
+    const Target = [...todoListObject[selectedCategory]];
+
+    setTodoListObject({
+      ...todoListObject,
+      [selectedCategory]: [...Target, newTodo],
+    });
     setValue("todo", "");
   };
-  localStorage.setItem("todoList", JSON.stringify(todoList));
-  localStorage.setItem(Categories.TODO, JSON.stringify(TODO));
-  localStorage.setItem(Categories.DOIN, JSON.stringify(DOIN));
-  localStorage.setItem(Categories.DONE, JSON.stringify(DONE));
+
+  localStorage.setItem(
+    selectedCategory,
+    JSON.stringify(todoListObject[selectedCategory])
+  );
 
   return (
     <Container>
