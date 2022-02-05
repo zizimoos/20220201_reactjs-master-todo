@@ -1,34 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
-<<<<<<< HEAD
-import styled from "styled-components";
-import {
-  Categories,
-  toDoState,
-  todoStateSelector,
-  categoryState,
-  todoStateObject,
-} from "../../atoms";
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: teal;
-`;
-
-const InputTo = styled.input`
-  width: 70vw;
-  padding: 10px;
-  margin-right: 30px;
-  border-radius: 5px;
-  border: none;
-`;
-=======
 import { Categories, toDoState, todoStateSelector } from "../../atoms";
->>>>>>> parent of 9c971cb... done before beautiful dnd
 
 interface IForm {
   todo: string;
@@ -38,27 +10,6 @@ const InputTodoForm = () => {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const [todoList, setTodoList] = useRecoilState(toDoState);
   const [TODO, DOIN, DONE] = useRecoilValue(todoStateSelector);
-<<<<<<< HEAD
-  const [selectedCategory, _] = useRecoilState(categoryState);
-  const [todoListObject, setTodoListObject] = useRecoilState(todoStateObject);
-
-  const handleValid = ({ todo }: IForm) => {
-    const newTodo = { id: Date.now(), text: todo, category: selectedCategory };
-    const Target = [...todoListObject[selectedCategory]];
-
-    setTodoListObject({
-      ...todoListObject,
-      [selectedCategory]: [...Target, newTodo],
-    });
-    setValue("todo", "");
-  };
-
-  localStorage.setItem(
-    selectedCategory,
-    JSON.stringify(todoListObject[selectedCategory])
-  );
-
-=======
 
   const handleValid = ({ todo }: IForm) => {
     setTodoList((oldToDos) => [
@@ -71,7 +22,6 @@ const InputTodoForm = () => {
   localStorage.setItem(Categories.TODO, JSON.stringify(TODO));
   localStorage.setItem(Categories.DOIN, JSON.stringify(DOIN));
   localStorage.setItem(Categories.DONE, JSON.stringify(DONE));
->>>>>>> parent of 9c971cb... done before beautiful dnd
   return (
     <div
       style={{
